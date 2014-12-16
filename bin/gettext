@@ -1,0 +1,32 @@
+#!/usr/bin/env node
+
+var dir = require('node-dir');
+var fs = require('fs');
+var argv = require('minimist')(process.argv);
+var Extractor = require('angular-gettext-tools').Extractor;
+
+if (!argv.dest) {
+  throw 'dest parameter missed';
+}
+
+//make clear extracted file
+fs.openSync(argv.dest, 'w');
+
+dir.readFiles(argv.base, {
+    match: argv.match ? new RegExp(argv.match) : /\.html$/,
+    matchDir: argv.matchDir
+    // exclude: argv.exclude ? new RegExp(argv.exclude) : 
+  }, function onReadFile(err, content, filename, next) {
+    if (err) {
+      throw err;
+    }
+    var extractor = new Extractor();
+    extractor.parse(filename, content);
+
+    fs.appendFile(argv.dest, extractor.toString(), next);
+  },
+  function onFinish(err, files){
+    if (err) throw err;
+    console.log('finished reading '+files.length+' files.');
+  }
+);
