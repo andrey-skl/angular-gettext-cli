@@ -2,6 +2,7 @@
 
 var dir = require('node-dir');
 var fs = require('fs');
+var Q = require('q');
 var argv = require('minimist')(process.argv);
 var Extractor = require('angular-gettext-tools').Extractor;
 
@@ -9,24 +10,56 @@ if (!argv.dest) {
   throw 'dest parameter missed';
 }
 
-//make clear extracted file
-fs.openSync(argv.dest, 'w');
+var dirConfig = {
+  match: argv.match ? new RegExp(argv.match) : /\.html$/,
+  matchDir: argv.matchDir,
+};
 
-dir.readFiles(argv.base, {
-    match: argv.match ? new RegExp(argv.match) : /\.html$/,
-    matchDir: argv.matchDir
-    // exclude: argv.exclude ? new RegExp(argv.exclude) : 
-  }, function onReadFile(err, content, filename, next) {
-    if (err) {
-      throw err;
-    }
-    var extractor = new Extractor();
-    extractor.parse(filename, content);
+if (argv.exclude) {
+  dirConfig.exclude = new RegExp(argv.exclude);
+}
 
-    fs.appendFile(argv.dest, extractor.toString(), next);
-  },
-  function onFinish(err, files){
-    if (err) throw err;
-    console.log('finished reading '+files.length+' files.');
-  }
-);
+var gettextExtractor = new Extractor({
+  markerName: argv['marker-name']
+});
+
+function processDir (dirName, extractor){
+  var deferred = Q.defer();
+
+  dir.readFiles(dirName, dirConfig, function onReadFile(err, content, filename, next) {
+        if (err) {
+          throw err;
+        }
+        extractor.parse(filename, content);
+        next();
+      },
+      function onFinish(err, files){
+        if (err) throw err;
+
+        console.log('Finished parsing ' + dirName +', readed '+files.length+' files.');
+        deferred.resolve();
+      }
+  );
+
+  return deferred.promise;
+}
+
+var base = argv.base;
+
+if (typeof base === 'string'){
+  base = [basePath];
+}
+
+var processPromises = base.map(function (basePath) {
+    return processDir(basePath, gettextExtractor)
+  });
+
+Q.all(processPromises).then(function () {
+    fs.writeFile(argv.dest, gettextExtractor.toString(), null, function (err) {
+      if (err){
+        throw err;
+      }
+      console.log('All files processed, stored in a file '+argv.dest);
+    });
+});
+

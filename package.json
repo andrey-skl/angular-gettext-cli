@@ -24,6 +24,7 @@
   "dependencies": {
     "angular-gettext-tools": "^1.0.6",
     "minimist": "^1.1.0",
-    "node-dir": "^0.1.6"
+    "node-dir": "^0.1.6",
+    "q": "^1.1.2"
   }
 }
