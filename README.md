@@ -6,7 +6,7 @@ A command line interface for angular-gettext-tools
 ## Installation
 
 `npm install angular-gettext-cli -g` for global using or
-`npm install angular-gettext-cli --save-dev' for local.
+`npm install angular-gettext-cli --save-dev` for local.
 
 ## Usage:
 
