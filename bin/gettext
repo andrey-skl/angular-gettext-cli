@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 
-var dir = require('node-dir');
+var glob = require("glob")
 var fs = require('fs');
-var Q = require('q');
 var argv = require('minimist')(process.argv);
 var Extractor = require('angular-gettext-tools').Extractor;
 
@@ -10,56 +9,27 @@ if (!argv.dest) {
   throw 'dest parameter missed';
 }
 
-var dirConfig = {
-  match: argv.match ? new RegExp(argv.match) : /\.html$/,
-  matchDir: argv.matchDir,
-};
-
-if (argv.exclude) {
-  dirConfig.exclude = new RegExp(argv.exclude);
-}
-
 var gettextExtractor = new Extractor({
-  markerName: argv['marker-name']
+    markerName: argv['marker-name']
 });
 
-function processDir (dirName, extractor){
-  var deferred = Q.defer();
 
-  dir.readFiles(dirName, dirConfig, function onReadFile(err, content, filename, next) {
-        if (err) {
-          throw err;
-        }
-        extractor.parse(filename, content);
-        next();
-      },
-      function onFinish(err, files){
-        if (err) throw err;
+glob(argv.files, null, function (err, fileNames) {
+    if (err) {
+        throw err;
+    }
+    fileNames.forEach(function (filename) {
+        var content = fs.readFileSync(filename, 'utf8');
 
-        console.log('Finished parsing ' + dirName +', read '+files.length+' files.');
-        deferred.resolve();
-      }
-  );
+        gettextExtractor.parse(filename, content);
+    });
+}).on('end', function finish(fileNames) {
+    console.log('Finished parsing ' + argv.files +', read '+fileNames.length+' files.');
 
-  return deferred.promise;
-}
-
-var base = argv.base;
-
-if (typeof base === 'string'){
-  base = [basePath];
-}
-
-var processPromises = base.map(function (basePath) {
-    return processDir(basePath, gettextExtractor)
-  });
-
-Q.all(processPromises).then(function () {
     fs.writeFile(argv.dest, gettextExtractor.toString(), null, function (err) {
       if (err){
         throw err;
       }
-      console.log('All files processed, stored in a file '+argv.dest);
+      console.log('All files processed, stored in a file ' + argv.dest);
     });
 });
-

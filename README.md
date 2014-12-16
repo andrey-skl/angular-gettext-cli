@@ -10,10 +10,9 @@ A command line interface for angular-gettext-tools
 
 ## Usage:
 
-`angular-gettext-cli --base ./app --match .html$ --dest ./extracted.pot`
+`angular-gettext-cli  --files "./app/*.+(js|html)" --dest ./extract.pot --marker-name i18n`
 
 ## Parameters:
-    *. --base - base path for search files. Can be specified multiple times
-    *. --match - an regexp to specify files to process
+    *. --files - an [glob](https://github.com/isaacs/node-glob) pattern to specify files to process
     *. --dest - path to file to write extracted words.
     *. --marker-name - a name of marker to search in js-files (see angular-gettext-tools)
