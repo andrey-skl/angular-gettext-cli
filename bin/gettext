@@ -36,7 +36,7 @@ function processDir (dirName, extractor){
       function onFinish(err, files){
         if (err) throw err;
 
-        console.log('Finished parsing ' + dirName +', readed '+files.length+' files.');
+        console.log('Finished parsing ' + dirName +', read '+files.length+' files.');
         deferred.resolve();
       }
   );
