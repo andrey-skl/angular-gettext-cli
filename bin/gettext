@@ -3,7 +3,11 @@
 var glob = require("glob")
 var fs = require('fs');
 var argv = require('minimist')(process.argv);
-var Extractor = require('angular-gettext-tools').Extractor;
+
+//Rewriting esprima dependency to espree, which supports es6
+var rewire = require("rewire");
+var Extractor = rewire('angular-gettext-tools/lib/extract');
+Extractor.__set__("esprima", require('espree'));
 
 if (!argv.dest) {
   throw 'dest parameter missed';
