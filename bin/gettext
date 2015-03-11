@@ -80,7 +80,7 @@ Espree.parse = function (file, options) {
 
         // enable return in global scope
         globalReturn: true
-    }
+    };
     return oldParse.apply(Espree, arguments);
 };
 
