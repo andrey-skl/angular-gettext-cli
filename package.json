@@ -6,7 +6,9 @@
     "angular-gettext-cli": "bin/gettext"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run test-extract && npm run test-compile",
+    "test-extract": "angular-gettext-cli --files 'test/*.+(html|js)' --dest test/extract.pot --marker-name i18n",
+    "test-compile": "angular-gettext-cli --compile --files 'test/*.po' --dest test/output.js --module gettext-test"
   },
   "repository": {
     "type": "git",
