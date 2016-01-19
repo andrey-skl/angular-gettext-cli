@@ -5,12 +5,17 @@ var glob = require("glob")
 var fs = require('fs');
 var argv = require('minimist')(process.argv);
 var Extractor = require('angular-gettext-tools').Extractor;
+var Compiler = require('angular-gettext-tools').Compiler;
 
 if (!argv.dest) {
-  throw 'dest parameter missed';
+  throw new Error('dest parameter missed');
 }
 
-var gettextExtractor = new Extractor(objToUpperCase(argv));
+if (argv.compile) {
+    compile(argv);
+} else {
+    extract(argv);
+}
 
 // add obj['markerName'] = obj['marker-name'] etc.
 function objToUpperCase(obj) {
@@ -19,25 +24,62 @@ function objToUpperCase(obj) {
         var key = keys[i].replace(/-(.)/g, function (m, $1) {
             return $1.toUpperCase();
         });
+        
+        obj[key] = obj[keys[i]];
     }
+    
+    return obj;
 }
 
-glob(argv.files, null, function (err, fileNames) {
-    if (err) {
-        throw err;
+function compile(options) {
+    var gettextCompiler = new Compiler(objToUpperCase(options));
+    
+    if (options.format && !Compiler.hasFormat(options.format)) {
+        throw new Error('There is no "' + options.format + '" output format.');
     }
-    fileNames.forEach(function (filename) {
-        var content = fs.readFileSync(filename, 'utf8');
-
-        gettextExtractor.parse(filename, content);
+    
+    var output;
+    glob(options.files, null, function (err, fileNames) {
+        if (err) {
+            throw err;
+        }
+        
+        output = gettextCompiler.convertPo(fileNames.map(function(fileName) {
+            return fs.readFileSync(fileName, options.encoding || 'utf-8');
+        }));
+    }).on('end', function finish(fileNames) {
+        console.log('Finished compiling ' + options.files +', read '+fileNames.length+' files.');
+        
+        fs.writeFile(options.dest, output, null, function(err) {
+            if (err) {
+              throw err;
+            }
+            
+            console.log('All files processed, stored in a file ' + options.dest);
+        });
     });
-}).on('end', function finish(fileNames) {
-    console.log('Finished parsing ' + argv.files +', read '+fileNames.length+' files.');
+}
 
-    fs.writeFile(argv.dest, gettextExtractor.toString(), null, function (err) {
-      if (err){
-        throw err;
-      }
-      console.log('All files processed, stored in a file ' + argv.dest);
+function extract(options) {
+    var gettextExtractor = new Extractor(objToUpperCase(options));
+
+    glob(options.files, null, function (err, fileNames) {
+        if (err) {
+            throw err;
+        }
+        fileNames.forEach(function (filename) {
+            var content = fs.readFileSync(filename, 'utf8');
+
+            gettextExtractor.parse(filename, content);
+        });
+    }).on('end', function finish(fileNames) {
+        console.log('Finished parsing ' + options.files +', read '+fileNames.length+' files.');
+
+        fs.writeFile(options.dest, gettextExtractor.toString(), null, function (err) {
+          if (err){
+            throw err;
+          }
+          console.log('All files processed, stored in a file ' + options.dest);
+        });
     });
-});
+}
