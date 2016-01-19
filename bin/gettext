@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+'use strict';
 
 var glob = require("glob")
 var fs = require('fs');
@@ -9,10 +10,17 @@ if (!argv.dest) {
   throw 'dest parameter missed';
 }
 
-var gettextExtractor = new Extractor({
-    markerName: argv['marker-name']
-});
+var gettextExtractor = new Extractor(objToUpperCase(argv));
 
+// add obj['markerName'] = obj['marker-name'] etc.
+function objToUpperCase(obj) {
+    var keys = Object.keys(obj);
+    for (var i = 0; i < keys.length; i++) {
+        var key = keys[i].replace(/-(.)/g, function (m, $1) {
+            return $1.toUpperCase();
+        });
+    }
+}
 
 glob(argv.files, null, function (err, fileNames) {
     if (err) {
