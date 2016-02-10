@@ -8,4 +8,4 @@ cmp example/extract-reference.pot example/dist/extract.pot && echo 'Extract test
 # Compile test
 npm run example-compile
 
-cmp example/compile-reference.js example/dist/compiled.js && echo 'Extract test passed' || exit 123
+cmp example/compile-reference.js example/dist/compiled.js && echo 'Compile test passed' || exit 123
