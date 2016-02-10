@@ -1,3 +1,5 @@
+mkdir ./example/dist
+
 # Extract test
 npm run example-extract
 
