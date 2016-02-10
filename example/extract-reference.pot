@@ -4,10 +4,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 
-#: test/example.js:2
+#: example/example.js:2
 msgid "Hello"
 msgstr ""
 
-#: test/example.html:1
+#: example/example.html:1
 msgid "Hello {{name}}"
 msgstr ""

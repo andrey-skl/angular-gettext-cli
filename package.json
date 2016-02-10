@@ -6,16 +6,19 @@
     "angular-gettext-cli": "bin/gettext"
   },
   "scripts": {
-    "test": "npm run test-extract && npm run test-compile",
-    "test-extract": "./bin/gettext --files 'test/*.+(html|js)' --dest test/extract.pot --marker-name i18n",
-    "test-compile": "./bin/gettext --compile --files 'test/*.po' --dest test/output.js --module gettext-test"
+    "test": "bash acceptance-test.sh",
+    "example-extract": "./bin/gettext --files 'example/*.+(html|js)' --dest example/dist/extract.pot --marker-name i18n",
+    "example-compile": "./bin/gettext --compile --files 'example/*.po' --dest example/dist/compiled.js --module gettext-test"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/huston007/angular-gettext-cli.git"
   },
   "keywords": [
-    "Angular"
+    "Angular",
+    "gettext",
+    "i18n",
+    "translation"
   ],
   "author": "Andrey Skladchikov",
   "license": "MIT",
