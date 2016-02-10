@@ -1,4 +1,4 @@
-angular-gettext-cli
+angular-gettext-cli [![Build Status](https://travis-ci.org/huston007/angular-gettext-cli.svg?branch=master)](https://travis-ci.org/huston007/angular-gettext-cli)
 ===================
 
 A command line interface for [angular-gettext-tools](https://github.com/rubenv/angular-gettext-tools)
