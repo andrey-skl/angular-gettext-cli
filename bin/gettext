@@ -4,8 +4,8 @@
 var glob = require("glob")
 var fs = require('fs');
 var argv = require('minimist')(process.argv);
-var Extractor = require('angular-gettext-tools').Extractor;
-var Compiler = require('angular-gettext-tools').Compiler;
+var Extractor = require('@huston007/angular-gettext-tools').Extractor;
+var Compiler = require('@huston007/angular-gettext-tools').Compiler;
 
 if (!argv.dest) {
   throw new Error('dest parameter missed');
