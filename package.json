@@ -1,6 +1,6 @@
 {
   "name": "angular-gettext-cli",
-  "version": "1.0.7",
+  "version": "1.1.0",
   "description": "A command line interface for angular gettools",
   "bin": {
     "angular-gettext-cli": "bin/gettext"
@@ -27,8 +27,8 @@
   },
   "homepage": "https://github.com/huston007/angular-gettext-cli",
   "dependencies": {
-    "angular-gettext-tools": "^2.1.11",
-    "glob": "^6.0.4",
-    "minimist": "^1.1.0"
+    "angular-gettext-tools": "^2.3",
+    "glob": "^7.1",
+    "minimist": "^1.2"
   }
 }
