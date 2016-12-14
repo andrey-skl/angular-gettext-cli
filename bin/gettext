@@ -24,37 +24,37 @@ function objToUpperCase(obj) {
         var key = keys[i].replace(/-(.)/g, function (m, $1) {
             return $1.toUpperCase();
         });
-        
+
         obj[key] = obj[keys[i]];
     }
-    
+
     return obj;
 }
 
 function compile(options) {
     var gettextCompiler = new Compiler(objToUpperCase(options));
-    
+
     if (options.format && !Compiler.hasFormat(options.format)) {
         throw new Error('There is no "' + options.format + '" output format.');
     }
-    
+
     var output;
-    glob(options.files, null, function (err, fileNames) {
+    glob(options.files, options.exclude ? { ignore: options.exclude } : null, function (err, fileNames) {
         if (err) {
             throw err;
         }
-        
+
         output = gettextCompiler.convertPo(fileNames.map(function(fileName) {
             return fs.readFileSync(fileName, options.encoding || 'utf-8');
         }));
     }).on('end', function finish(fileNames) {
         console.log('Finished compiling ' + options.files +', read '+fileNames.length+' files.');
-        
+
         fs.writeFile(options.dest, output, null, function(err) {
             if (err) {
               throw err;
             }
-            
+
             console.log('All files processed, stored in a file ' + options.dest);
         });
     });
@@ -63,7 +63,7 @@ function compile(options) {
 function extract(options) {
     var gettextExtractor = new Extractor(objToUpperCase(options));
 
-    glob(options.files, null, function (err, fileNames) {
+    glob(options.files, options.exclude ? { ignore: options.exclude } : null, function (err, fileNames) {
         if (err) {
             throw err;
         }
