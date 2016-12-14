@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/huston007/angular-gettext-cli",
   "dependencies": {
-    "angular-gettext-tools": "^2",
+    "angular-gettext-tools": "cdwv/angular-gettext-tools#d644016",
     "glob": "^7.1",
     "minimist": "^1.2"
   }
