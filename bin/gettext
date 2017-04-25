@@ -27,7 +27,7 @@ function objToUpperCase(obj) {
 
         obj[key] = obj[keys[i]];
     }
-    if(obj.markerNames){
+    if (obj.markerNames){
       obj.markerNames = obj.markerNames.replace(/\s/g,'').split(",");
     }
     return obj;
