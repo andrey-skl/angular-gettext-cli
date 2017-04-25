@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-var glob = require("glob")
+var glob = require("glob");
 var fs = require('fs');
 var argv = require('minimist')(process.argv);
 var Extractor = require('angular-gettext-tools').Extractor;
@@ -27,7 +27,9 @@ function objToUpperCase(obj) {
 
         obj[key] = obj[keys[i]];
     }
-
+    if(obj.markerNames){
+      obj.markerNames = obj.markerNames.replace(/\s/g,'').split(",");
+    }
     return obj;
 }
 

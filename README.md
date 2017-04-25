@@ -17,6 +17,7 @@ A command line interface for [angular-gettext-tools](https://github.com/rubenv/a
 * `--exclude` - (optional) a [glob](https://github.com/isaacs/node-glob) pattern to specify files to ignore
 * `--dest` - path to file to write extracted words.
 * `--marker-name` - (optional) a name of marker to search in js-files (see [angular-gettext-tools](https://github.com/rubenv/angular-gettext-tools#options))
+* `--marker-names` - (optional) comma separated string of marker names to search for in the js-files (see [angular-gettext-tools](https://github.com/rubenv/angular-gettext-tools#options))
 
 ## Compilation:
 
