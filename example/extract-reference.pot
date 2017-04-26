@@ -11,3 +11,7 @@ msgstr ""
 #: example/example.html:1
 msgid "Hello {{name}}"
 msgstr ""
+
+#: example/example.js:3
+msgid "hi"
+msgstr ""

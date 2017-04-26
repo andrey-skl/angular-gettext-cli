@@ -7,7 +7,7 @@
   },
   "scripts": {
     "test": "bash acceptance-test.sh",
-    "example-extract": "./bin/gettext --files 'example/*.+(html|js)' --dest example/dist/extract.pot --marker-name i18n",
+    "example-extract": "./bin/gettext --files 'example/*.+(html|js)' --dest example/dist/extract.pot --marker-names 'i18n, __'",
     "example-compile": "./bin/gettext --compile --files 'example/*.po' --dest example/dist/compiled.js --module gettext-test"
   },
   "repository": {
