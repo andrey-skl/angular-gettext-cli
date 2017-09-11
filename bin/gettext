@@ -17,6 +17,10 @@ if (argv.compile) {
     extract(argv);
 }
 
+function strToArray(obj, key, value) {
+    obj[key] = obj[key].replace(/\s/g,'').split(",");
+}
+
 // add obj['markerName'] = obj['marker-name'] etc.
 function objToUpperCase(obj) {
     var keys = Object.keys(obj);
@@ -27,9 +31,10 @@ function objToUpperCase(obj) {
 
         obj[key] = obj[keys[i]];
     }
-    if (obj.markerNames){
-      obj.markerNames = obj.markerNames.replace(/\s/g,'').split(",");
-    }
+
+    obj.markerNames && strToArray(obj, 'markerNames');
+    obj.attributes && strToArray(obj, 'attributes');
+
     return obj;
 }
 
