@@ -16,6 +16,10 @@ msgstr ""
 msgid "Hello {{name}}"
 msgstr ""
 
+#: example/positional.htm:1
+msgid "Positional"
+msgstr ""
+
 #: example/example.js:3
 msgid "hi"
 msgstr ""
