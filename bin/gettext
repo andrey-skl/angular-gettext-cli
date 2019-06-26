@@ -45,7 +45,25 @@ function expandFileNames(options) {
     else
         globFileNames = [];
     var positionalFileNames = options._;
-    return globFileNames.concat(positionalFileNames);
+    // Still need to expand @filename -> read content of filename
+    var expandedAt = [];
+    function add(filename) {
+        if (filename)  // ignore empty strings
+            expandedAt.push(filename);
+    }
+    for (let i = 0; i < positionalFileNames.length; i++) {
+        let fileName = positionalFileNames[i];
+        if (fileName[0] !== '@') {
+            // filename does not start with @
+            add(fileName);
+        } else {
+            // filename starts with @, read content
+            let content = fs.readFileSync(fileName.substr(1), options.encoding || 'utf-8').split(/\s+/);
+            for (let j = 0; j < content.length; j++)
+                add(content[j]);
+        }
+    }
+    return globFileNames.concat(expandedAt);
 }
 
 function compile(options) {

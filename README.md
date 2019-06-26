@@ -19,11 +19,11 @@ A command line interface for [angular-gettext-tools](https://github.com/rubenv/a
 * `--marker-name` - (optional) a name of marker to search in js-files (see [angular-gettext-tools](https://github.com/rubenv/angular-gettext-tools#options))
 * `--marker-names` - (optional) comma separated string of marker names to search for in the js-files (see [angular-gettext-tools](https://github.com/rubenv/angular-gettext-tools#options))
 * `--attributes` - (optional) comma separated string of marker names to search for in the html-files (see [angular-gettext-tools](https://github.com/rubenv/angular-gettext-tools#options))
-* Any remaining positional arguments are added to the list of files to process, in addition to the glob files.
+* Any remaining positional arguments are added to the list of files to process, in addition to the glob files. If the filename starts with @ its contents are read and added to the list of files to process.
 
 ## Compilation:
 
-`angular-gettext-cli  --compile --files 'test/*.po' --dest 'test/output.js' --format javascript --module gettext-test test3.po test4.po`
+`angular-gettext-cli  --compile --files 'test/*.po' --dest 'test/output.js' --format javascript --module gettext-test test3.po test4.po @list.po.in`
 
 ### Parameters:
 * `--files` - a [glob](https://github.com/isaacs/node-glob) pattern to specify files to process
